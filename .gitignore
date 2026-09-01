@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.netlify/
+.env
+.env.*
+!.env.example
+coverage/
+*.tsbuildinfo
+*.log
+gitleaks-report.*
+gitleaks.sarif
+consultation-exports/
+*.decrypted.json
+.DS_Store
+Thumbs.db

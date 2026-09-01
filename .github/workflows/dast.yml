@@ -1,0 +1,22 @@
+name: OWASP ZAP baseline
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "41 18 * * 6"
+
+permissions:
+  contents: read
+
+jobs:
+  passive-production-scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Run passive baseline scan
+        uses: zaproxy/action-baseline@6c5a007541891231cd9e0ddec25d4f25c59c9874 # v0.15.0
+        with:
+          target: "https://veritax.co.kr/"
+          fail_action: true
+          allow_issue_writing: false
+          cmd_options: "-a -j"

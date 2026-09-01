@@ -1,0 +1,33 @@
+title = "VERITAX secret detection"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "veritax-encryption-key"
+description = "VERITAX consultation encryption or CSRF secret"
+regex = '''(?i)(CONSULTATION_ENCRYPTION_KEY|CSRF_SECRET)\s*[:=]\s*["']?[A-Za-z0-9+/=_-]{24,}'''
+keywords = ["CONSULTATION_ENCRYPTION_KEY", "CSRF_SECRET"]
+tags = ["encryption", "consultation", "pii"]
+
+[[rules]]
+id = "database-url-with-credentials"
+description = "Database URL containing credentials"
+regex = '''(?i)(postgres|mysql|mongodb|redis)(ql)?://[^\s:@]+:[^\s@]+@[^\s]+'''
+keywords = ["postgres://", "postgresql://", "mysql://", "mongodb://", "redis://"]
+tags = ["database", "credentials"]
+
+[allowlist]
+description = "Documented placeholders only"
+paths = [
+  '''(^|/)node_modules/''',
+  '''(^|/)dist/''',
+  '''(^|/)coverage/''',
+  '''(^|/)\.env\.example$''',
+  '''(^|/)tests?/'''
+]
+regexes = [
+  '''EXAMPLE''',
+  '''example\.com''',
+  '''placeholder'''
+]

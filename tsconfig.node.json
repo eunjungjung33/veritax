@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "target": "ES2023",
+    "lib": ["ES2023", "DOM"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "types": ["node", "vitest/globals"],
+    "noEmit": true
+  },
+  "include": [
+    "vite.config.ts",
+    "netlify/functions/**/*.ts",
+    "src/data/fees.ts",
+    "src/utils/**/*.ts",
+    "tests/**/*.ts"
+  ]
+}

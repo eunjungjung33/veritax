@@ -1,0 +1,29 @@
+name: TLS and security header monitor
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 21 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  verify-production-tls:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify certificate, hostname, expiry, and HSTS
+        shell: bash
+        run: |
+          set -euo pipefail
+          for domain in veritax.co.kr www.veritax.co.kr; do
+            curl --fail --silent --show-error --head --max-time 20 "https://${domain}/" > "/tmp/${domain}.headers"
+            grep -qi '^strict-transport-security:.*max-age=' "/tmp/${domain}.headers"
+            grep -qi '^content-security-policy:.*default-src' "/tmp/${domain}.headers"
+            grep -qi '^x-content-type-options:[[:space:]]*nosniff' "/tmp/${domain}.headers"
+            grep -qi '^referrer-policy:[[:space:]]*no-referrer' "/tmp/${domain}.headers"
+            grep -qi '^x-frame-options:[[:space:]]*DENY' "/tmp/${domain}.headers"
+            openssl s_client -connect "${domain}:443" -servername "${domain}" -verify_hostname "${domain}" -verify_return_error </dev/null 2>/dev/null \
+              | openssl x509 -noout -checkend 1209600
+          done
