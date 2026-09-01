@@ -1,7 +1,7 @@
 import https from "node:https";
 import tls from "node:tls";
 
-const domains = (process.env.TLS_CHECK_DOMAINS ?? "web-production-6ef9.up.railway.app")
+const domains = (process.env.TLS_CHECK_DOMAINS ?? "web-production-43f8e.up.railway.app")
   .split(",")
   .map((domain) => domain.trim())
   .filter(Boolean);

@@ -17,7 +17,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for domain in web-production-6ef9.up.railway.app; do
+          for domain in web-production-43f8e.up.railway.app; do
             curl --fail --silent --show-error --head --max-time 20 "https://${domain}/" > "/tmp/${domain}.headers"
             grep -qi '^strict-transport-security:.*max-age=' "/tmp/${domain}.headers"
             grep -qi '^content-security-policy:.*default-src' "/tmp/${domain}.headers"

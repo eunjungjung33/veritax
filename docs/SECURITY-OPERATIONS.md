@@ -50,7 +50,7 @@ CONSULTATION_ENCRYPTION_KEY="..." node scripts/decrypt-consultation.mjs \
 
 - GitHub Actions는 읽기 전용 토큰을 기본으로 사용합니다.
 - 외부 Action은 태그가 아니라 커밋 SHA로 고정합니다.
-- workflow, 상담 서버, `railway.toml` 변경은 CODEOWNERS 승인을 받습니다.
+- workflow, 상담 서버, `.railway/railway.ts` 변경은 CODEOWNERS 승인을 받습니다.
 - Gitleaks, CodeQL, npm audit, 테스트와 빌드가 통과해야 배포합니다.
 - Gitleaks Action은 Node 24 기반 v3의 불변 커밋 SHA로 고정합니다. Node 20 기반 v2는 2026-09-16 이후 GitHub 호스팅 러너에서 실행되지 않습니다.
 - Railway 서버는 플랫폼의 정규화된 `X-Real-IP`을 기준으로 180초당 5회의 상담 요청만 허용합니다.

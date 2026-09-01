@@ -2,7 +2,7 @@
 
 기존 운영 사이트와 법무법인 웨이브의 정보 구조를 바탕으로 새로 구성한 React + Railway 애플리케이션입니다. 외부 이미지, 외부 폰트, 외부 상담 폼, 방문 분석 스크립트를 사용하지 않습니다.
 
-운영 주소: <https://web-production-6ef9.up.railway.app/>
+운영 주소: <https://web-production-43f8e.up.railway.app/>
 
 ## 제공 기능
 
