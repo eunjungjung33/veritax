@@ -7,6 +7,7 @@ const packageJson = JSON.parse(readFileSync(new URL("../package.json", import.me
 describe("deployment security configuration", () => {
   it("enforces the critical browser protections", () => {
     expect(netlify).toContain("Content-Security-Policy");
+    expect(netlify).toContain("Cross-Origin-Embedder-Policy");
     expect(netlify).toContain("frame-ancestors 'none'");
     expect(netlify).toContain("connect-src 'self'");
     expect(netlify).toContain("script-src-attr 'none'");

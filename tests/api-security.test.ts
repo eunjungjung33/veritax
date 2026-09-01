@@ -87,6 +87,8 @@ describe("consultation API boundary", () => {
     expect(response.status).toBe(201);
     expect(response.headers.get("cache-control")).toContain("no-store");
     expect(response.headers.get("content-security-policy")).toContain("default-src 'none'");
+    expect(response.headers.get("cross-origin-embedder-policy")).toBe("require-corp");
+    expect(response.headers.get("strict-transport-security")).toContain("max-age=31536000");
     expect(setJSON).toHaveBeenCalledOnce();
     const [, envelope] = setJSON.mock.calls[0] as [string, Record<string, unknown>];
     expect(envelope.algorithm).toBe("AES-256-GCM");

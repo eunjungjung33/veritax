@@ -13,10 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      - name: Check out security policy
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
       - name: Run passive baseline scan
         uses: zaproxy/action-baseline@6c5a007541891231cd9e0ddec25d4f25c59c9874 # v0.15.0
         with:
           target: "https://web-production-43f8e.up.railway.app/"
+          rules_file_name: ".zap/rules.tsv"
           fail_action: true
           allow_issue_writing: false
           cmd_options: "-a -j"

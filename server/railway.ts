@@ -26,6 +26,7 @@ const MAX_RATE_LIMIT_ENTRIES = 10_000;
 
 const STATIC_HEADERS = {
   "Content-Security-Policy": "default-src 'self'; base-uri 'none'; connect-src 'self'; font-src 'self'; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; img-src 'self' data:; manifest-src 'self'; media-src 'self'; object-src 'none'; require-trusted-types-for 'script'; script-src 'self'; script-src-attr 'none'; style-src 'self'; style-src-attr 'none'; worker-src 'none'; upgrade-insecure-requests",
+  "Cross-Origin-Embedder-Policy": "require-corp",
   "Cross-Origin-Opener-Policy": "same-origin",
   "Cross-Origin-Resource-Policy": "same-origin",
   "Permissions-Policy": "accelerometer=(), autoplay=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()",
@@ -350,7 +351,12 @@ async function staticEndpoint(request: IncomingMessage, response: ServerResponse
   response.statusCode = 200;
   Object.entries(STATIC_HEADERS).forEach(([key, value]) => response.setHeader(key, value));
   response.setHeader("Content-Type", MIME_TYPES[extension] ?? "application/octet-stream");
-  response.setHeader("Cache-Control", pathname.startsWith("/assets/") ? "public, max-age=31536000, immutable" : "no-cache");
+  if (pathname.startsWith("/assets/")) {
+    response.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+  } else {
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.setHeader("Pragma", "no-cache");
+  }
   if (request.method === "HEAD") {
     response.end();
     return;

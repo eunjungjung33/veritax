@@ -1,0 +1,5 @@
+# Reviewed OWASP ZAP baseline exceptions. Unlisted alerts still fail the workflow.
+10027	IGNORE	(Bundled React output contains a Korean select-label fragment; Gitleaks and source review confirm no secret or developer note.)
+10049	IGNORE	(Public HTML is intentionally non-storable so consultation-related navigation is not retained by shared caches.)
+10109	IGNORE	(VERITAX is intentionally a client-rendered React single-page application.)
+90005	IGNORE	(ZAP's crawler does not send browser-owned Sec-Fetch-Dest request metadata; the server cannot add request headers.)
