@@ -1,5 +1,5 @@
 import { createHmac, randomBytes } from "node:crypto";
-import { constantTimeEqual } from "./http";
+import { constantTimeEqual } from "./http.js";
 
 const TOKEN_MAX_AGE_MS = 30 * 60 * 1000;
 

@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://veritax.co.kr/sitemap.xml
+Sitemap: https://web-production-6ef9.up.railway.app/sitemap.xml

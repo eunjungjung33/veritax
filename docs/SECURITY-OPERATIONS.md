@@ -12,11 +12,11 @@ node -e "console.log(require('node:crypto').randomBytes(32).toString('base64'))"
 - `CSRF_SECRET`: 요청 위조 방지 토큰 서명
 - `CONSULTATION_KEY_VERSION`: 현재 키 식별자. 예: `2026-09-v1`
 
-키는 Netlify production 환경변수와 승인된 오프라인 복구 보관소에만 둡니다. Deploy Preview, 로컬 공용 파일, GitHub Secrets가 필요 없는 워크플로에는 제공하지 않습니다.
+키는 Railway production 비밀 환경변수와 승인된 오프라인 복구 보관소에만 둡니다. 임시 환경, 로컬 공용 파일, GitHub Secrets가 필요 없는 워크플로에는 제공하지 않습니다.
 
 ## 상담 확인 절차
 
-1. Netlify Blobs의 `veritax-consultations` 저장소에서 필요한 키의 JSON을 승인된 업무용 장치로 내려받습니다.
+1. Railway `web` 서비스의 `/data/consultations/YYYY-MM-DD/`에서 필요한 암호문 JSON을 승인된 업무용 장치로 내려받습니다.
 2. 다운로드한 파일은 암호문이어야 하며 `ciphertext`, `iv`, `authTag`, `keyVersion`만 포함하는지 확인합니다.
 3. 승인된 장치에서 다음 명령으로 새 출력 파일에 복호화합니다. 기존 파일 덮어쓰기는 차단되어 있습니다.
 
@@ -32,7 +32,7 @@ CONSULTATION_ENCRYPTION_KEY="..." node scripts/decrypt-consultation.mjs \
 ## 보존과 삭제
 
 - 기본 보존기간은 90일입니다.
-- `cleanup-consultations` 예약 함수가 매일 오래된 항목을 삭제합니다.
+- Railway 서버가 시작 시점과 매일 오래된 암호문 파일을 삭제합니다.
 - 보존기간은 1~365일 범위에서만 설정할 수 있습니다.
 - 상담 계약으로 전환된 기록은 이 저장소 밖의 승인된 고객관리 절차로 별도 이관하고 목적과 보존기간을 다시 고지합니다.
 
@@ -42,7 +42,7 @@ CONSULTATION_ENCRYPTION_KEY="..." node scripts/decrypt-consultation.mjs \
 
 1. 상담 접수 함수를 일시 비활성화하거나 유지보수 응답으로 전환합니다.
 2. 암호화 키와 CSRF 비밀값을 각각 회전합니다.
-3. Netlify deploy/function 로그와 GitHub 변경 이력을 확인하되 로그에 개인정보를 추가하지 않습니다.
+3. Railway deploy/runtime/HTTP 로그와 GitHub 변경 이력을 확인하되 로그에 개인정보를 추가하지 않습니다.
 4. 영향받은 키 버전과 기간을 확인합니다.
 5. 법정 통지 의무와 당사자 안내 필요성을 개인정보 보호 책임자와 검토합니다.
 
@@ -50,7 +50,7 @@ CONSULTATION_ENCRYPTION_KEY="..." node scripts/decrypt-consultation.mjs \
 
 - GitHub Actions는 읽기 전용 토큰을 기본으로 사용합니다.
 - 외부 Action은 태그가 아니라 커밋 SHA로 고정합니다.
-- workflow, function, `netlify.toml` 변경은 CODEOWNERS 승인을 받습니다.
+- workflow, 상담 서버, `railway.toml` 변경은 CODEOWNERS 승인을 받습니다.
 - Gitleaks, CodeQL, npm audit, 테스트와 빌드가 통과해야 배포합니다.
 - Gitleaks Action은 Node 24 기반 v3의 불변 커밋 SHA로 고정합니다. Node 20 기반 v2는 2026-09-16 이후 GitHub 호스팅 러너에서 실행되지 않습니다.
-- Netlify 함수 요청 제한의 `windowSize`는 플랫폼 허용 최대값인 180초를 넘기지 않으며 자동 테스트로 고정합니다.
+- Railway 서버는 플랫폼의 정규화된 `X-Real-IP`을 기준으로 180초당 5회의 상담 요청만 허용합니다.

@@ -1,5 +1,6 @@
 node_modules/
 dist/
+dist-server/
 .netlify/
 .env
 .env.*
@@ -10,6 +11,7 @@ coverage/
 gitleaks-report.*
 gitleaks.sarif
 consultation-exports/
+consultation-data/
 *.decrypted.json
 .DS_Store
 Thumbs.db

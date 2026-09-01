@@ -13,6 +13,7 @@
   "include": [
     "vite.config.ts",
     "netlify/functions/**/*.ts",
+    "server/**/*.ts",
     "src/data/fees.ts",
     "src/utils/**/*.ts",
     "tests/**/*.ts"

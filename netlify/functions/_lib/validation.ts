@@ -1,4 +1,4 @@
-import { containsHighlySensitiveData } from "../../../src/utils/sensitiveData";
+import { containsHighlySensitiveData } from "../../../src/utils/sensitiveData.js";
 
 export const MAX_BODY_BYTES = 16_384;
 
