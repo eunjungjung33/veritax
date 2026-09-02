@@ -25,8 +25,8 @@ const RATE_LIMIT_MAX = 5;
 const MAX_RATE_LIMIT_ENTRIES = 10_000;
 
 const STATIC_HEADERS = {
-  "Content-Security-Policy": "default-src 'self'; base-uri 'none'; connect-src 'self'; font-src 'self'; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; img-src 'self' data:; manifest-src 'self'; media-src 'self'; object-src 'none'; require-trusted-types-for 'script'; script-src 'self'; script-src-attr 'none'; style-src 'self'; style-src-attr 'none'; worker-src 'none'; upgrade-insecure-requests",
-  "Cross-Origin-Embedder-Policy": "require-corp",
+  "Content-Security-Policy": "default-src 'self'; base-uri 'none'; connect-src 'self'; font-src 'self'; form-action 'self'; frame-ancestors 'none'; frame-src https://www.openstreetmap.org; img-src 'self' data:; manifest-src 'self'; media-src 'self'; object-src 'none'; require-trusted-types-for 'script'; script-src 'self'; script-src-attr 'none'; style-src 'self'; style-src-attr 'none'; worker-src 'none'; upgrade-insecure-requests",
+  "Cross-Origin-Embedder-Policy": "unsafe-none",
   "Cross-Origin-Opener-Policy": "same-origin",
   "Cross-Origin-Resource-Policy": "same-origin",
   "Permissions-Policy": "accelerometer=(), autoplay=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()",
@@ -162,7 +162,7 @@ async function sendResponse(response: ServerResponse, webResponse: Response) {
 
 function receiptId(now: Date) {
   const day = now.toISOString().slice(0, 10).replaceAll("-", "");
-  return `VTX-${day}-${randomBytes(5).toString("hex").toUpperCase()}`;
+  return `JEJ-${day}-${randomBytes(5).toString("hex").toUpperCase()}`;
 }
 
 async function storeEnvelope(root: string, now: Date, envelope: EncryptedEnvelope) {
@@ -410,7 +410,7 @@ export async function startRailwayServer() {
   server.headersTimeout = 10_000;
   server.keepAliveTimeout = 5_000;
   server.maxRequestsPerSocket = 100;
-  server.listen(PORT, "0.0.0.0", () => console.info("veritax_server_ready", { port: PORT }));
+  server.listen(PORT, "0.0.0.0", () => console.info("jej_server_ready", { port: PORT }));
   return server;
 }
 

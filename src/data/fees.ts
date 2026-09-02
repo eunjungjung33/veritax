@@ -1,9 +1,9 @@
 export const feeServices = [
   { id: "종합소득세", label: "종합소득세 신고", consultationService: "종합소득세 신고" },
   { id: "법인세", label: "법인세 신고", consultationService: "법인세 신고" },
-  { id: "부가세", label: "부가가치세 신고", consultationService: "부가가치세" },
-  { id: "양도세", label: "양도소득세 신고", consultationService: "양도소득세" },
-  { id: "상속증여", label: "상속·증여세 신고", consultationService: "상속·증여세" },
+  { id: "부가세", label: "부가가치세 신고", consultationService: "부가가치세 신고" },
+  { id: "양도세", label: "양도소득세 신고", consultationService: "양도소득세 신고" },
+  { id: "상속증여", label: "상속·증여세 신고", consultationService: "상속·증여세 신고" },
   { id: "기장", label: "기장 대리 (월)", consultationService: "기장 대리" },
   { id: "컨설팅", label: "세무 컨설팅", consultationService: "세무 컨설팅" },
 ] as const;
@@ -38,4 +38,8 @@ export function estimateFee(service: string, scale: string) {
 
 export function consultationServiceFor(service: string) {
   return feeServices.find((item) => item.id === service)?.consultationService ?? "";
+}
+
+export function feeServiceForConsultation(service: string) {
+  return feeServices.find((item) => item.consultationService === service)?.id ?? "";
 }

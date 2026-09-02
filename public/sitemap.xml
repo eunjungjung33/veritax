@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://web-production-43f8e.up.railway.app/</loc><priority>1.0</priority></url>
-  <url><loc>https://web-production-43f8e.up.railway.app/about</loc><priority>0.8</priority></url>
-  <url><loc>https://web-production-43f8e.up.railway.app/services</loc><priority>0.9</priority></url>
-  <url><loc>https://web-production-43f8e.up.railway.app/special-services</loc><priority>0.8</priority></url>
-  <url><loc>https://web-production-43f8e.up.railway.app/insights</loc><priority>0.8</priority></url>
-  <url><loc>https://web-production-43f8e.up.railway.app/cases</loc><priority>0.7</priority></url>
-  <url><loc>https://web-production-43f8e.up.railway.app/estimate</loc><priority>0.8</priority></url>
-  <url><loc>https://web-production-43f8e.up.railway.app/consultation</loc><priority>0.9</priority></url>
-  <url><loc>https://web-production-43f8e.up.railway.app/location</loc><priority>0.6</priority></url>
-  <url><loc>https://web-production-43f8e.up.railway.app/privacy</loc><priority>0.3</priority></url>
+  <url><loc>https://veritax.co.kr/</loc><priority>1.0</priority></url>
+  <url><loc>https://veritax.co.kr/about</loc><priority>0.9</priority></url>
+  <url><loc>https://veritax.co.kr/services</loc><priority>0.9</priority></url>
+  <url><loc>https://veritax.co.kr/estimate</loc><priority>0.9</priority></url>
+  <url><loc>https://veritax.co.kr/insights</loc><priority>0.8</priority></url>
+  <url><loc>https://veritax.co.kr/location</loc><priority>0.8</priority></url>
+  <url><loc>https://veritax.co.kr/privacy</loc><priority>0.3</priority></url>
 </urlset>

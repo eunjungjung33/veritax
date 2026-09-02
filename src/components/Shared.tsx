@@ -1,16 +1,16 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ArrowUpRight } from "./Icons";
+import { KAKAO_CHANNEL_URL, PHONE_HREF } from "../data/content";
+import { ArrowRight, ArrowUpRight, MessageCircle, Phone } from "./Icons";
 
-export function PageHero({ index, eyebrow, title, description }: { index: string; eyebrow: string; title: ReactNode; description: string }) {
+export function PageHero({ eyebrow, title, description }: { eyebrow: string; title: ReactNode; description: string }) {
   return (
-    <section className="page-hero section-dark">
-      <div className="page-hero-index">{index}</div>
-      <div>
+    <section className="page-hero">
+      <div className="page-hero-inner">
         <span className="eyebrow light">{eyebrow}</span>
         <h1>{title}</h1>
+        <p>{description}</p>
       </div>
-      <p>{description}</p>
     </section>
   );
 }
@@ -32,11 +32,11 @@ export function SectionHeading({ eyebrow, title, description, action }: { eyebro
   );
 }
 
-export function VisualPlaceholder({ label, caption, tone = "dark" }: { label: string; caption: string; tone?: "dark" | "light" | "green" }) {
+export function PortraitPlaceholder({ initials, caption }: { initials: string; caption: string }) {
   return (
-    <div className={`visual-placeholder visual-${tone}`} data-media-slot={label} aria-label={`${label} 이미지 자리`}>
-      <div className="visual-grid" aria-hidden="true" />
-      <span>{label}</span>
+    <div className="portrait-placeholder" aria-label={caption}>
+      <div aria-hidden="true">{initials}</div>
+      <span>PORTRAIT</span>
       <p>{caption}</p>
     </div>
   );
@@ -46,16 +46,18 @@ export function ConsultationBand() {
   return (
     <section className="consultation-band">
       <div>
-        <span className="eyebrow light">PRIVATE CONSULTATION</span>
-        <h2>민감한 자료는 나중에,<br />안전한 경로로 받습니다.</h2>
+        <span className="eyebrow light">FREE CONSULTATION</span>
+        <h2>지금 바로 무료 상담을<br />신청하세요.</h2>
       </div>
-      <p>
-        첫 신청에서는 상담에 필요한 최소 정보만 수집합니다. 주민등록번호, 계좌·카드 정보,
-        비밀번호와 원본 서류는 입력하지 마세요.
-      </p>
-      <Link className="button button-light" to="/consultation">
-        보안 상담 신청 <ArrowUpRight />
-      </Link>
+      <p>복잡한 세무 문제일수록 빠른 확인이 중요합니다. 편한 방법으로 문의해 주세요.</p>
+      <div className="consultation-band-actions">
+        <a className="button button-light" href={KAKAO_CHANNEL_URL} target="_blank" rel="noopener noreferrer">
+          <MessageCircle size={18} /> 카카오톡 상담 <ArrowUpRight size={16} />
+        </a>
+        <a className="button button-ghost" href={PHONE_HREF}>
+          <Phone size={18} /> 전화 상담
+        </a>
+      </div>
     </section>
   );
 }

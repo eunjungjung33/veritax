@@ -8,7 +8,7 @@ import { MAX_BODY_BYTES, validateConsultation } from "./_lib/validation";
 
 function receiptId(now: Date) {
   const day = now.toISOString().slice(0, 10).replaceAll("-", "");
-  return `VTX-${day}-${randomBytes(5).toString("hex").toUpperCase()}`;
+  return `JEJ-${day}-${randomBytes(5).toString("hex").toUpperCase()}`;
 }
 
 function retentionDays() {

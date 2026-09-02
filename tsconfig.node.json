@@ -14,6 +14,7 @@
     "vite.config.ts",
     "netlify/functions/**/*.ts",
     "server/**/*.ts",
+    "src/data/content.ts",
     "src/data/fees.ts",
     "src/utils/**/*.ts",
     "tests/**/*.ts"

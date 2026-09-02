@@ -15,3 +15,8 @@ consultation-data/
 *.decrypted.json
 .DS_Store
 Thumbs.db
+artifacts/qa/*
+!artifacts/qa/home-final.png
+!artifacts/qa/home-mobile-final.png
+!artifacts/qa/estimate-final.png
+!artifacts/qa/services-final.png

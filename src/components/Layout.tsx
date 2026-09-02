@@ -1,19 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
-import { navItems } from "../data/content";
-import { ArrowUpRight, Phone } from "./Icons";
+import { KAKAO_CHANNEL_URL, navItems, PHONE_HREF, PHONE_NUMBER } from "../data/content";
+import { ArrowUpRight, MessageCircle, Phone } from "./Icons";
+
+const brandName = "정은정 세무회계컨설팅";
 
 const titles: Record<string, string> = {
-  "/": "정은정 세무회계컨설팅 | VERITAX",
-  "/about": "전문가 소개 | VERITAX",
-  "/services": "업무영역 | VERITAX",
-  "/special-services": "특별 서비스 | VERITAX",
-  "/insights": "세무 인사이트 | VERITAX",
-  "/cases": "수행 경험 | VERITAX",
-  "/estimate": "세무 보수 간편 견적 | VERITAX",
-  "/consultation": "보안 상담 신청 | VERITAX",
-  "/location": "오시는 길 | VERITAX",
-  "/privacy": "개인정보 처리방침 | VERITAX",
+  "/": `${brandName} | 공인회계사 세무 컨설팅`,
+  "/about": `구성원 | ${brandName}`,
+  "/services": `주요 업무영역 | ${brandName}`,
+  "/estimate": `견적 및 상담 신청 | ${brandName}`,
+  "/consultation": `견적 및 상담 신청 | ${brandName}`,
+  "/insights": `세무 뉴스 | ${brandName}`,
+  "/location": `찾아오시는 길 | ${brandName}`,
+  "/privacy": `개인정보 처리방침 | ${brandName}`,
 };
 
 export function Layout() {
@@ -23,9 +23,13 @@ export function Layout() {
 
   useEffect(() => {
     setOpen(false);
-    window.scrollTo({ top: 0, behavior: "auto" });
-    document.title = titles[location.pathname] ?? "VERITAX";
-  }, [location.pathname]);
+    document.title = titles[location.pathname] ?? brandName;
+    if (location.hash) {
+      requestAnimationFrame(() => document.getElementById(location.hash.slice(1))?.scrollIntoView({ behavior: "auto" }));
+    } else {
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+  }, [location.pathname, location.hash]);
 
   useEffect(() => {
     document.body.classList.toggle("menu-open", open);
@@ -47,26 +51,31 @@ export function Layout() {
     <>
       <a className="skip-link" href="#main-content">본문으로 바로가기</a>
       <header className="site-header">
-        <Link className="brand" to="/" aria-label="베리택스 홈">
-          <span className="brand-mark" aria-hidden="true">V</span>
-          <span>
-            <strong>VERITAX</strong>
-            <small>정은정 세무회계컨설팅</small>
+        <Link className="brand" to="/" aria-label={`${brandName} 홈`}>
+          <span className="brand-mark" aria-hidden="true">JEJ</span>
+          <span className="brand-copy">
+            <strong>{brandName}</strong>
+            <small>JEJ TAX ACCOUNTING ADVISORY</small>
           </span>
         </Link>
+
         <nav className="desktop-nav" aria-label="주요 메뉴">
-          {navItems.map((item) => (
-            <NavLink key={item.to} to={item.to}>{item.label}</NavLink>
+          {navItems.map((item) => "children" in item ? (
+            <div className="nav-group" key={item.to}>
+              <NavLink to={item.to}>{item.label}</NavLink>
+              <div className="nav-dropdown" aria-label={`${item.label} 하위 메뉴`}>
+                {item.children.map((child) => <Link key={child.to} to={child.to}>{child.label}</Link>)}
+              </div>
+            </div>
+          ) : (
+            <NavLink key={item.to} to={item.to} end={item.to === "/"}>{item.label}</NavLink>
           ))}
         </nav>
+
         <div className="header-actions">
-          <a className="header-phone" href="tel:02-6426-1654" aria-label="02-6426-1654로 전화">
-            <Phone size={17} />
-            <span>02-6426-1654</span>
+          <a className="button button-small button-gold header-cta" href={KAKAO_CHANNEL_URL} target="_blank" rel="noopener noreferrer">
+            무료 상담 신청 <ArrowUpRight size={15} />
           </a>
-          <Link className="button button-small button-dark" to="/consultation">
-            상담 신청 <ArrowUpRight size={16} />
-          </Link>
           <button
             ref={menuButtonRef}
             className="menu-toggle"
@@ -85,11 +94,20 @@ export function Layout() {
       <div id="mobile-menu" className={`mobile-menu ${open ? "is-open" : ""}`} aria-hidden={!open}>
         <nav aria-label="모바일 메뉴">
           {navItems.map((item, index) => (
-            <NavLink key={item.to} to={item.to} tabIndex={open ? 0 : -1}>
-              <span>0{index + 1}</span>{item.label}<ArrowUpRight />
-            </NavLink>
+            <div className="mobile-nav-item" key={item.to}>
+              <NavLink to={item.to} end={item.to === "/"} tabIndex={open ? 0 : -1}>
+                <span>0{index + 1}</span>{item.label}<ArrowUpRight />
+              </NavLink>
+              {"children" in item && (
+                <div className="mobile-subnav">
+                  {item.children.map((child) => <Link key={child.to} to={child.to} tabIndex={open ? 0 : -1}>{child.label}</Link>)}
+                </div>
+              )}
+            </div>
           ))}
-          <Link className="mobile-consult" to="/consultation" tabIndex={open ? 0 : -1}>보안 상담 신청</Link>
+          <a className="mobile-consult" href={KAKAO_CHANNEL_URL} target="_blank" rel="noopener noreferrer" tabIndex={open ? 0 : -1}>
+            <MessageCircle size={18} /> 무료 상담 신청
+          </a>
         </nav>
       </div>
 
@@ -97,18 +115,27 @@ export function Layout() {
         <Outlet />
       </main>
 
+      <div className="floating-actions" aria-label="빠른 상담">
+        <a className="floating-kakao" href={KAKAO_CHANNEL_URL} target="_blank" rel="noopener noreferrer" aria-label="카카오톡 채널로 상담">
+          <MessageCircle /><span>카톡</span>
+        </a>
+        <a className="floating-phone" href={PHONE_HREF} aria-label={`${PHONE_NUMBER}로 전화`}>
+          <Phone /><span>전화</span>
+        </a>
+      </div>
+
       <footer className="site-footer">
         <div className="footer-lead">
-          <span className="eyebrow light">LET&apos;S TALK</span>
-          <h2>복잡한 세금,<br />명확한 다음 단계로.</h2>
-          <Link className="circle-link" to="/consultation" aria-label="상담 신청 페이지로 이동">
+          <span className="eyebrow light">JEJ TAX ACCOUNTING ADVISORY</span>
+          <h2>복잡한 세금,<br />명확하게.</h2>
+          <a className="circle-link" href={KAKAO_CHANNEL_URL} target="_blank" rel="noopener noreferrer" aria-label="카카오톡 무료 상담 신청">
             <ArrowUpRight size={30} />
-          </Link>
+          </a>
         </div>
         <div className="footer-grid">
           <div>
-            <div className="footer-brand">VERITAX</div>
-            <p>정은정 세무회계컨설팅</p>
+            <div className="footer-brand">JEJ</div>
+            <p>정은정 세무회계컨설팅<br />JEJ TAX ACCOUNTING ADVISORY</p>
           </div>
           <div>
             <strong>OFFICE</strong>
@@ -116,16 +143,16 @@ export function Layout() {
           </div>
           <div>
             <strong>CONTACT</strong>
-            <p><a href="tel:02-6426-1654">02-6426-1654</a><br />평일 09:00–18:00</p>
+            <p><a href={PHONE_HREF}>{PHONE_NUMBER}</a><br />평일 09:00–18:00</p>
           </div>
           <div>
             <strong>LINK</strong>
-            <p><Link to="/privacy">개인정보 처리방침</Link><br /><Link to="/location">오시는 길</Link></p>
+            <p><Link to="/privacy">개인정보 처리방침</Link><br /><Link to="/location">찾아오시는 길</Link></p>
           </div>
         </div>
         <div className="footer-bottom">
           <span>사업자등록번호 899-66-00798 · 대표 공인회계사 정은정</span>
-          <span>© 2026 VERITAX. All rights reserved.</span>
+          <span>© 2026 정은정 세무회계컨설팅. All rights reserved.</span>
         </div>
       </footer>
     </>

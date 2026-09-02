@@ -41,6 +41,15 @@ export function Phone({ size = 20, className }: IconProps) {
   );
 }
 
+export function MessageCircle({ size = 20, className }: IconProps) {
+  return (
+    <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M20.5 11.5a8 8 0 0 1-8.4 8L7 21l1.3-3.3a8 8 0 1 1 12.2-6.2Z" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M8.5 12h.01M12 12h.01M15.5 12h.01" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export function MapPin({ size = 20, className }: IconProps) {
   return (
     <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
