@@ -42,7 +42,6 @@ export function HeroFilm() {
     };
   }, []);
 
-  const shouldLoadVideo = !hasError && (autoEligible || userChoice !== "none");
   const shouldPlay = userChoice === "play" || (userChoice === "none" && autoEligible && !autoPlayBlocked);
 
   useEffect(() => {
@@ -54,6 +53,9 @@ export function HeroFilm() {
     video.defaultPlaybackRate = HERO_PLAYBACK_RATE;
     video.playbackRate = HERO_PLAYBACK_RATE;
 
+    // Preserve explicit playback inside the original tap gesture on mobile.
+    if (userChoice === "play") return;
+
     if (!shouldPlay) {
       video.pause();
       return;
@@ -64,7 +66,7 @@ export function HeroFilm() {
       if (userChoice === "none") setAutoPlayBlocked(true);
       else setUserChoice("pause");
     });
-  }, [shouldLoadVideo, shouldPlay, userChoice]);
+  }, [shouldPlay, userChoice]);
 
   const togglePlayback = () => {
     const playbackWasRequested = isPlaying || shouldPlay;
@@ -78,8 +80,20 @@ export function HeroFilm() {
     setUserChoice("play");
     const video = videoRef.current;
     if (video) {
+      video.defaultMuted = true;
+      video.muted = true;
+      video.setAttribute("playsinline", "");
+      video.setAttribute("webkit-playsinline", "");
       video.playbackRate = HERO_PLAYBACK_RATE;
-      void video.play().catch(() => setUserChoice("pause"));
+      void video.play()
+        .then(() => {
+          setHasPresentedFrame(true);
+          setIsPlaying(true);
+        })
+        .catch(() => {
+          setIsPlaying(false);
+          setUserChoice("pause");
+        });
     }
   };
 
@@ -89,7 +103,7 @@ export function HeroFilm() {
 
   return (
     <>
-      <div className={`hero-film ${hasPresentedFrame && shouldLoadVideo ? "is-ready" : ""}`} aria-hidden="true">
+      <div className={`hero-film ${hasPresentedFrame && !hasError ? "is-ready" : ""}`} aria-hidden="true">
         <img
           className="hero-film-poster"
           src={heroPoster}
@@ -99,15 +113,14 @@ export function HeroFilm() {
           decoding="async"
           fetchPriority="high"
         />
-        {shouldLoadVideo && (
+        {!hasError && (
           <video
             ref={videoRef}
             className="hero-film-video"
-            autoPlay={shouldPlay}
             muted
             loop
             playsInline
-            preload="metadata"
+            preload={autoEligible || userChoice !== "none" ? "metadata" : "none"}
             poster={heroPoster}
             tabIndex={-1}
             disablePictureInPicture
@@ -119,7 +132,10 @@ export function HeroFilm() {
               setHasPresentedFrame(true);
               setIsPlaying(true);
             }}
-            onPause={() => setIsPlaying(false)}
+            onPause={() => {
+              setIsPlaying(false);
+              if (userChoice === "play") setUserChoice("pause");
+            }}
             onEnded={() => setIsPlaying(false)}
             onError={() => {
               setHasError(true);
@@ -133,10 +149,10 @@ export function HeroFilm() {
       </div>
       {!hasError && (
         <button
-          className={`hero-media-control ${shouldLoadVideo ? "is-compact" : "is-initial"}`}
+          className={`hero-media-control ${isPlaying || userChoice !== "none" ? "is-compact" : "is-initial"}`}
           type="button"
           aria-label={controlLabel}
-          aria-pressed={isPlaying}
+          aria-pressed={isPlaying || isLoading}
           data-testid="hero-film-control"
           onClick={togglePlayback}
         >

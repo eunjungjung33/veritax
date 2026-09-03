@@ -2,7 +2,7 @@ import { mkdir, mkdtemp, readFile, rm, utimes, writeFile } from "node:fs/promise
 import { tmpdir } from "node:os";
 import { join, parse } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { cleanupExpiredConsultations, clientIp, safeStorageRoot } from "../server/railway";
+import { cleanupExpiredConsultations, clientIp, parseByteRange, safeStorageRoot } from "../server/railway";
 
 const temporaryRoots: string[] = [];
 
@@ -19,6 +19,16 @@ describe("Railway consultation server safety", () => {
   it("uses Railway's normalized client IP header", () => {
     expect(clientIp({ "x-real-ip": "203.0.113.10" }, "127.0.0.1")).toBe("203.0.113.10");
     expect(clientIp({ "x-real-ip": "spoofed, 203.0.113.10" }, "127.0.0.1")).toBe("127.0.0.1");
+  });
+
+  it("parses single byte ranges for mobile video streaming", () => {
+    expect(parseByteRange(undefined, 100)).toBeNull();
+    expect(parseByteRange("bytes=0-9", 100)).toEqual({ start: 0, end: 9 });
+    expect(parseByteRange("bytes=90-", 100)).toEqual({ start: 90, end: 99 });
+    expect(parseByteRange("bytes=-10", 100)).toEqual({ start: 90, end: 99 });
+    expect(parseByteRange("bytes=0-999", 100)).toEqual({ start: 0, end: 99 });
+    expect(parseByteRange("bytes=100-101", 100)).toBe("invalid");
+    expect(parseByteRange("bytes=0-1,5-6", 100)).toBe("invalid");
   });
 
   it("deletes only expired encrypted record files", async () => {

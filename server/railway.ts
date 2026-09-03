@@ -324,6 +324,36 @@ async function fileExists(path: string) {
   }
 }
 
+type ByteRange = { start: number; end: number };
+
+export function parseByteRange(header: string | undefined, size: number): ByteRange | "invalid" | null {
+  if (header === undefined) return null;
+  if (!Number.isSafeInteger(size) || size <= 0 || header.length > 100) return "invalid";
+
+  const match = /^bytes=(\d*)-(\d*)$/u.exec(header.trim());
+  if (!match || (!match[1] && !match[2])) return "invalid";
+
+  if (!match[1]) {
+    const suffixLength = Number(match[2]);
+    if (!Number.isSafeInteger(suffixLength) || suffixLength <= 0) return "invalid";
+    return { start: Math.max(0, size - suffixLength), end: size - 1 };
+  }
+
+  const start = Number(match[1]);
+  const requestedEnd = match[2] ? Number(match[2]) : size - 1;
+  if (
+    !Number.isSafeInteger(start)
+    || !Number.isSafeInteger(requestedEnd)
+    || start < 0
+    || start >= size
+    || requestedEnd < start
+  ) {
+    return "invalid";
+  }
+
+  return { start, end: Math.min(requestedEnd, size - 1) };
+}
+
 async function staticEndpoint(request: IncomingMessage, response: ServerResponse) {
   if (request.method !== "GET" && request.method !== "HEAD") {
     await sendResponse(response, jsonResponse({ message: "허용되지 않은 요청입니다." }, 405, { Allow: "GET, HEAD" }));
@@ -348,20 +378,37 @@ async function staticEndpoint(request: IncomingMessage, response: ServerResponse
 
   const target = await fileExists(requested) ? requested : join(DIST_ROOT, "index.html");
   const extension = extname(target).toLowerCase();
-  response.statusCode = 200;
+  const details = await stat(target);
+  const rawRange = request.headers.range;
+  const range = parseByteRange(Array.isArray(rawRange) ? rawRange.join(",") : rawRange, details.size);
+
   Object.entries(STATIC_HEADERS).forEach(([key, value]) => response.setHeader(key, value));
   response.setHeader("Content-Type", MIME_TYPES[extension] ?? "application/octet-stream");
+  response.setHeader("Accept-Ranges", "bytes");
   if (pathname.startsWith("/assets/")) {
     response.setHeader("Cache-Control", "public, max-age=31536000, immutable");
   } else {
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     response.setHeader("Pragma", "no-cache");
   }
+
+  if (range === "invalid") {
+    response.statusCode = 416;
+    response.setHeader("Content-Range", `bytes */${details.size}`);
+    response.setHeader("Content-Length", "0");
+    response.end();
+    return;
+  }
+
+  response.statusCode = range ? 206 : 200;
+  response.setHeader("Content-Length", String(range ? range.end - range.start + 1 : details.size));
+  if (range) response.setHeader("Content-Range", `bytes ${range.start}-${range.end}/${details.size}`);
+
   if (request.method === "HEAD") {
     response.end();
     return;
   }
-  createReadStream(target).on("error", () => {
+  createReadStream(target, range ? { start: range.start, end: range.end } : undefined).on("error", () => {
     if (!response.headersSent) response.statusCode = 500;
     response.end();
   }).pipe(response);
