@@ -32,7 +32,9 @@ npm run dev
 
 ## 이미지 교체
 
-`public/images/office-hero-1.jpg`, `public/images/office-hero-2.jpg`는 인물과 상호가 없는 임시 오피스 배경입니다. 실제 사무실 사진을 같은 파일명으로 교체하면 켄번스 슬라이드에 바로 반영됩니다. 대표·고문 프로필은 `src/pages.tsx`의 `PortraitPlaceholder` 위치를 로컬 `<img>`로 교체하세요.
+메인 히어로는 `src/components/HeroFilm.tsx`에서 `src/assets/hero-one-take.mp4`와 `src/assets/hero-gold-path-poster.jpg`를 사용합니다. 데스크톱에서는 영상을 자동 반복 재생하고, 모바일·데이터 절약·저감 모션 환경에서는 포스터를 먼저 표시한 뒤 재생 버튼으로 영상을 시작할 수 있습니다. 대표·고문 프로필은 `src/pages.tsx`의 `PortraitPlaceholder` 위치를 실제 촬영 이미지로 교체하세요.
+
+`public/images/office-hero-1.jpg`, `public/images/office-hero-2.jpg`는 이전 히어로 시안 보관용이며 현재 화면에서는 사용하지 않습니다.
 
 ## 상담 접수 운영
 

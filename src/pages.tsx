@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { ConsultationForm } from "./components/ConsultationForm";
+import { HeroFilm } from "./components/HeroFilm";
 import { ArrowRight, ArrowUpRight, Check, Lock, MapPin, MessageCircle, Phone } from "./components/Icons";
 import { ConsultationBand, PageHero, PortraitPlaceholder, SectionHeading } from "./components/Shared";
 import {
@@ -21,14 +22,14 @@ export function HomePage() {
   return (
     <>
       <section className="home-hero">
-        <div className="hero-slides" aria-hidden="true">
-          <div className="hero-slide hero-slide-one" />
-          <div className="hero-slide hero-slide-two" />
-        </div>
+        <HeroFilm />
         <div className="hero-shade" aria-hidden="true" />
         <div className="hero-copy">
           <span className="hero-badge">CERTIFIED PUBLIC ACCOUNTANT · SEOUL GANGDONG</span>
-          <h1>복잡한 세금,<br /><em>명확하게</em></h1>
+          <h1>
+            <span className="hero-title-line"><span>복잡한 세금,</span></span>
+            <span className="hero-title-line hero-title-accent"><em>명확하게</em></span>
+          </h1>
           <p>
             <strong>Big4 출신 공인회계사가 직접 담당합니다</strong>
             <span>개인·법인 세무신고부터 세무 컨설팅까지, 정확하고 신속하게 해결해 드립니다</span>
