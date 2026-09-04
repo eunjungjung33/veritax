@@ -988,7 +988,11 @@ em { color: var(--gold-bright); }
   .section-heading { margin-bottom: 40px; }
   .eyebrow { font-size: 11px; }
   .section-heading h2 { font-size: clamp(38px, 10.8vw, 47px); font-weight: 700; }
-  .home-news .section-heading h2 { line-height: 1.22; }
+  .home-news .section-heading h2 {
+    font-size: clamp(25px, 8vw, 32px);
+    line-height: 1.22;
+    white-space: nowrap;
+  }
   .section-heading p { color: #4d5b6c; font-size: 15px; }
   .portrait-placeholder { min-height: auto; aspect-ratio: 4 / 5; }
   .home-about-copy { padding: 28px 24px 30px; }
