@@ -1048,22 +1048,40 @@ em { color: var(--gold-bright); }
     bottom: max(12px, env(safe-area-inset-bottom));
     left: max(12px, env(safe-area-inset-left));
     display: grid;
-    grid-template-columns: 1fr 54px;
-    gap: 6px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
   .floating-actions a {
+    min-width: 0;
     width: auto;
-    height: 50px;
+    height: 52px;
     grid-template-columns: auto auto;
     justify-content: center;
     align-content: center;
-    gap: 7px;
+    gap: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.72);
     border-radius: 3px;
-    font-size: 12px;
+    box-shadow: 0 12px 30px rgba(3, 10, 20, 0.3), 0 3px 10px rgba(3, 10, 20, 0.18);
+    font-size: 13px;
   }
-  .floating-phone span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-  .floating-phone { grid-template-columns: 1fr; }
-  .floating-actions a svg { width: 18px; }
+  .floating-actions .floating-kakao {
+    border-color: rgba(132, 99, 5, 0.62);
+    background: #fee500;
+    box-shadow: 0 12px 30px rgba(3, 10, 20, 0.28), 0 3px 10px rgba(126, 92, 0, 0.22);
+  }
+  .floating-actions .floating-phone {
+    grid-template-columns: auto auto;
+    border-color: rgba(229, 201, 135, 0.88);
+    background: #102a46;
+  }
+  .floating-phone span {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+  }
+  .floating-actions a svg { width: 19px; height: 19px; }
 
   .site-footer { padding-top: 64px; padding-bottom: 92px; }
   .footer-lead { margin-bottom: 48px; }
