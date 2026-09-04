@@ -18,6 +18,27 @@ import {
 } from "./data/content";
 import { consultationServiceFor, estimateFee, feeScales, feeServiceForConsultation, feeServices } from "./data/fees";
 
+const serviceDescriptionTails: Partial<Record<(typeof services)[number]["number"], string>> = {
+  "01": "종합소득세 신고 및 절세 플랜 수립",
+  "02": "법인 세무 전반 대행",
+  "03": "환급 극대화 전략 수립",
+  "05": "설립 전후 세무·회계 설계",
+  "06": "불복청구 등 전문 세무 용역",
+  "07": "전반적인 기장 서비스",
+};
+
+function ServiceDescription({ service }: { service: (typeof services)[number] }) {
+  const tail = serviceDescriptionTails[service.number];
+  if (!tail || !service.description.endsWith(tail)) return service.description;
+
+  return (
+    <>
+      {service.description.slice(0, -tail.length)}
+      <span className="service-description-tail">{tail}</span>
+    </>
+  );
+}
+
 export function HomePage() {
   return (
     <>
@@ -58,7 +79,7 @@ export function HomePage() {
           <div className="home-about-copy">
             <span className="mini-index">01 — PRINCIPAL CPA</span>
             <h3>정은정 <small>공인회계사</small></h3>
-            <p>한영회계법인·삼정회계법인택스본부에서의 풍부한 경험을 바탕으로, 개인사업자·법인·고액 자산가를 위한 맞춤형 세무 컨설팅을 제공합니다. SK하이닉스·현대자동차 등 국내 대형 법인의 법인세 신고부터 세무조사 대응까지, 복잡한 세무 문제를 명확하고 신속하게 해결합니다.</p>
+            <p>한영회계법인·삼정회계법인 택스본부에서의 풍부한 경험을 바탕으로, 개인사업자·법인·고액 자산가를 위한 맞춤형 세무 컨설팅을 제공합니다. SK하이닉스·현대자동차 등 국내 대형 법인의 법인세 신고부터 세무조사 대응까지, 복잡한 세무 문제를 명확하고 신속하게 해결합니다.</p>
             <div className="badge-row"><span>공인회계사 (KICPA)</span><span>창업기업관리사</span></div>
             <Link className="text-link" to="/about#principal">구성원 자세히 보기 <ArrowRight /></Link>
           </div>
@@ -70,9 +91,9 @@ export function HomePage() {
         <div className="service-preview-grid">
           {services.slice(0, 6).map((service) => (
             <Link key={service.number} className="service-preview-card" to={`/estimate?service=${encodeURIComponent(service.title)}#consultation`}>
-              <span>{service.number}</span>
+              <span className="service-preview-number">{service.number}</span>
               <h3>{service.title}</h3>
-              <p>{service.description}</p>
+              <p className="service-preview-description"><ServiceDescription service={service} /></p>
               <ArrowUpRight />
             </Link>
           ))}
@@ -110,7 +131,7 @@ export function AboutPage() {
           <span className="eyebrow">PRINCIPAL CPA</span>
           <h2>정은정 <small>대표 공인회계사</small></h2>
           <p className="role">공인회계사 (KICPA) <b>|</b> 창업기업관리사</p>
-          <p className="profile-intro">한영회계법인·삼정회계법인택스본부에서의 풍부한 경험을 바탕으로, 개인사업자·법인·고액 자산가를 위한 맞춤형 세무 컨설팅을 제공합니다. SK하이닉스·현대자동차 등 국내 대형 법인의 법인세 신고부터 세무조사 대응까지, 복잡한 세무 문제를 명확하고 신속하게 해결합니다.</p>
+          <p className="profile-intro">한영회계법인·삼정회계법인 택스본부에서의 풍부한 경험을 바탕으로, 개인사업자·법인·고액 자산가를 위한 맞춤형 세무 컨설팅을 제공합니다. SK하이닉스·현대자동차 등 국내 대형 법인의 법인세 신고부터 세무조사 대응까지, 복잡한 세무 문제를 명확하고 신속하게 해결합니다.</p>
           <div className="badge-row"><span>공인회계사 (KICPA)</span><span>창업기업관리사</span></div>
           <div className="profile-details">
             <div><strong>경력 사항</strong><ul>{principalCareers.map((career) => <li key={career}>{career}</li>)}</ul></div>
@@ -123,7 +144,7 @@ export function AboutPage() {
         <PortraitPlaceholder initials="HKP" caption="홍광표 고문 프로필 사진 교체 영역" />
         <div className="profile-copy">
           <span className="eyebrow">TAX ADVISER</span>
-          <h2>홍광표고문</h2>
+          <h2>홍광표 고문</h2>
           <p className="role">세무사</p>
           <div className="profile-details single-column">
             <div><strong>약력</strong><ul>{adviserCareers.map((career) => <li key={career}>{career}</li>)}</ul></div>
@@ -147,7 +168,7 @@ export function ServicesPage() {
             <article className="service-card" key={service.number}>
               <span className="service-number">{service.number}</span>
               <h2>{service.title}</h2>
-              <p>{service.description}</p>
+              <p><ServiceDescription service={service} /></p>
               <Link to={`/estimate?service=${encodeURIComponent(service.title)}#consultation`} aria-label={`${service.title} 상담 신청`}>
                 상담하기 <ArrowUpRight size={17} />
               </Link>

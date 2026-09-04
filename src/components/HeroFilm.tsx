@@ -1,14 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import heroPoster from "../assets/hero-gold-path-poster.jpg";
 import heroVideo from "../assets/hero-one-take.mp4";
+import { HERO_BASE_PLAYBACK_RATE, syncHeroPlaybackRate } from "../utils/heroPlayback";
 
 type NavigatorWithConnection = Navigator & {
   connection?: EventTarget & { saveData?: boolean };
 };
 
 type UserPlaybackChoice = "none" | "play" | "pause";
-
-const HERO_PLAYBACK_RATE = 0.7;
 
 function canAutoPlayHero() {
   if (typeof window === "undefined" || typeof navigator === "undefined") return false;
@@ -50,6 +49,37 @@ export function HeroFilm() {
   const shouldPlay = userChoice === "play" || (userChoice === "none" && autoEligible && !autoPlayBlocked);
 
   useEffect(() => {
+    if (hasError) return;
+    const video = videoRef.current;
+    if (!video) return;
+
+    let videoFrameRequest: number | null = null;
+    const syncPlaybackRate = () => syncHeroPlaybackRate(video);
+    const syncOnVideoFrame = () => {
+      syncPlaybackRate();
+      videoFrameRequest = video.requestVideoFrameCallback(syncOnVideoFrame);
+    };
+
+    video.addEventListener("timeupdate", syncPlaybackRate);
+    video.addEventListener("seeking", syncPlaybackRate);
+    video.addEventListener("seeked", syncPlaybackRate);
+    syncPlaybackRate();
+
+    if (typeof video.requestVideoFrameCallback === "function") {
+      videoFrameRequest = video.requestVideoFrameCallback(syncOnVideoFrame);
+    }
+
+    return () => {
+      video.removeEventListener("timeupdate", syncPlaybackRate);
+      video.removeEventListener("seeking", syncPlaybackRate);
+      video.removeEventListener("seeked", syncPlaybackRate);
+      if (videoFrameRequest !== null && typeof video.cancelVideoFrameCallback === "function") {
+        video.cancelVideoFrameCallback(videoFrameRequest);
+      }
+    };
+  }, [hasError]);
+
+  useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
@@ -57,8 +87,8 @@ export function HeroFilm() {
     video.muted = true;
     video.setAttribute("playsinline", "");
     video.setAttribute("webkit-playsinline", "");
-    video.defaultPlaybackRate = HERO_PLAYBACK_RATE;
-    video.playbackRate = HERO_PLAYBACK_RATE;
+    video.defaultPlaybackRate = HERO_BASE_PLAYBACK_RATE;
+    syncHeroPlaybackRate(video);
 
     // Preserve explicit playback inside the original tap gesture on mobile.
     if (userChoice === "play") return;
@@ -91,7 +121,7 @@ export function HeroFilm() {
       video.muted = true;
       video.setAttribute("playsinline", "");
       video.setAttribute("webkit-playsinline", "");
-      video.playbackRate = HERO_PLAYBACK_RATE;
+      syncHeroPlaybackRate(video);
       void video.play()
         .then(() => {
           setHasPresentedFrame(true);
@@ -133,10 +163,11 @@ export function HeroFilm() {
             tabIndex={-1}
             disablePictureInPicture
             onLoadedMetadata={(event) => {
-              event.currentTarget.defaultPlaybackRate = HERO_PLAYBACK_RATE;
-              event.currentTarget.playbackRate = HERO_PLAYBACK_RATE;
+              event.currentTarget.defaultPlaybackRate = HERO_BASE_PLAYBACK_RATE;
+              syncHeroPlaybackRate(event.currentTarget);
             }}
-            onPlaying={() => {
+            onPlaying={(event) => {
+              syncHeroPlaybackRate(event.currentTarget);
               setHasPresentedFrame(true);
               setIsPlaying(true);
             }}

@@ -106,7 +106,7 @@ em { color: var(--gold-bright); font: inherit; font-style: normal; }
 .hero-copy p { margin: 0 auto; max-width: 720px; color: #e8eeec; }
 .hero-copy p strong, .hero-copy p span { display: block; }
 .hero-copy p strong { font-size: clamp(17px, 1.6vw, 22px); }
-.hero-copy p span { margin-top: 8px; color: #cdd8d4; font-size: clamp(14px, 1.2vw, 17px); overflow-wrap: anywhere; }
+.hero-copy p span { margin-top: 8px; color: #cdd8d4; font-size: clamp(14px, 1.2vw, 17px); overflow-wrap: normal; }
 .hero-actions { margin-top: 38px; display: flex; justify-content: center; gap: 12px; }
 .scroll-cue { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); display: grid; justify-items: center; gap: 9px; color: rgba(255,255,255,.75); font: 700 8px/1 Inter, sans-serif; letter-spacing: .2em; }
 .scroll-cue span { width: 1px; height: 34px; background: linear-gradient(transparent, white); }

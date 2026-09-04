@@ -49,7 +49,10 @@ export function ConsultationBand() {
         <span className="eyebrow light">FREE CONSULTATION</span>
         <h2>지금 바로 무료 상담을<br />신청하세요.</h2>
       </div>
-      <p>복잡한 세무 문제일수록 빠른 확인이 중요합니다. 편한 방법으로 문의해 주세요.</p>
+      <p className="consultation-band-copy">
+        <span>복잡한 세무 문제일수록 빠른 확인이 중요합니다.</span>
+        <span>편한 방법으로 문의해 주세요.</span>
+      </p>
       <div className="consultation-band-actions">
         <a className="button button-light" href={KAKAO_CHANNEL_URL} target="_blank" rel="noopener noreferrer">
           <MessageCircle size={18} /> 카카오톡 상담 <ArrowUpRight size={16} />
