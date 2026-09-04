@@ -507,6 +507,9 @@ em { color: var(--gold-bright); }
 }
 .service-card:nth-child(4n + 2),
 .service-card:nth-child(4n + 3) { background: #f6f2e9; }
+.service-card:hover,
+.service-card:nth-child(4n + 2):hover,
+.service-card:nth-child(4n + 3):hover { background: var(--green); }
 .service-card h2 { margin: auto 0 15px; font-size: clamp(28px, 2.6vw, 38px); }
 .service-card p { min-height: auto; max-width: 540px; font-size: 13px; }
 .service-card a { margin-top: 22px; color: var(--green); }
