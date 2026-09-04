@@ -142,6 +142,7 @@ em { color: var(--gold-bright); font: inherit; font-style: normal; }
 .portrait-placeholder > div { margin: auto; align-self: center; color: rgba(255,255,255,.22); font: 500 clamp(90px, 11vw, 165px)/1 Georgia, serif; }
 .portrait-placeholder > span { font: 700 9px Inter, sans-serif; letter-spacing: .2em; }
 .portrait-placeholder > p { margin: 8px 0 0; color: #c7d6d2; font-size: 12px; }
+.portrait-placeholder > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
 .home-about-copy { max-width: 720px; }
 .mini-index { color: var(--gold); font: 700 10px Inter, sans-serif; letter-spacing: .18em; }
 .home-about-copy h3 { margin: 26px 0 23px; font-size: clamp(45px, 5vw, 72px); line-height: 1.05; letter-spacing: -.05em; font-weight: 560; }

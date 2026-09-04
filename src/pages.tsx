@@ -3,7 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { ConsultationForm } from "./components/ConsultationForm";
 import { HeroFilm } from "./components/HeroFilm";
 import { ArrowRight, ArrowUpRight, Check, Lock, MapPin, MessageCircle, Phone } from "./components/Icons";
-import { ConsultationBand, PageHero, PortraitPlaceholder, SectionHeading } from "./components/Shared";
+import { ConsultationBand, PageHero, PortraitPlaceholder, PrincipalPortrait, SectionHeading } from "./components/Shared";
 import {
   adviserCareers,
   faqs,
@@ -75,7 +75,7 @@ export function HomePage() {
       <section className="section home-about">
         <SectionHeading eyebrow="THE PROFESSIONAL" title={<>경험으로 읽고,<br />명확하게 설명합니다.</>} />
         <div className="home-about-grid">
-          <PortraitPlaceholder initials="JEJ" caption="정은정 대표 프로필 사진 교체 영역" />
+          <PrincipalPortrait />
           <div className="home-about-copy">
             <span className="mini-index">01 — PRINCIPAL CPA</span>
             <h3>정은정 <small>공인회계사</small></h3>
@@ -126,7 +126,7 @@ export function AboutPage() {
       <PageHero eyebrow="OUR PROFESSIONALS" title={<>깊이 있는 경험,<br /><em>직접 책임지는 상담.</em></>} description="대표 공인회계사와 세무 고문이 각 분야의 경험을 바탕으로 함께 검토합니다." />
 
       <section className="section profile-section" id="principal">
-        <PortraitPlaceholder initials="JEJ" caption="정은정 대표 프로필 사진 교체 영역" />
+        <PrincipalPortrait />
         <div className="profile-copy">
           <span className="eyebrow">PRINCIPAL CPA</span>
           <h2>정은정 <small>대표 공인회계사</small></h2>

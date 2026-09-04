@@ -32,6 +32,14 @@ export function SectionHeading({ eyebrow, title, description, action }: { eyebro
   );
 }
 
+export function PrincipalPortrait() {
+  return (
+    <div className="portrait-placeholder">
+      <img src="/images/jung-eun-jung.jpg" alt="정은정 대표 공인회계사" width={864} height={1184} loading="lazy" decoding="async" />
+    </div>
+  );
+}
+
 export function PortraitPlaceholder({ initials, caption }: { initials: string; caption: string }) {
   return (
     <div className="portrait-placeholder" aria-label={caption}>
