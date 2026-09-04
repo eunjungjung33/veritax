@@ -157,9 +157,6 @@ em { color: var(--gold-bright); font: inherit; font-style: normal; }
 .service-preview-card h3 { margin: auto 0 14px; font-size: clamp(26px, 2.4vw, 36px); letter-spacing: -.04em; }
 .service-preview-card p { margin: 0; color: var(--muted); font-size: 13px; }
 .service-preview-card > svg { position: absolute; top: 28px; right: 28px; }
-.service-preview-card:hover { color: white; background: var(--green); }
-.service-preview-card:hover p, .service-preview-card:hover > span { color: #c7d9d4; }
-
 .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
 .news-card { min-width: 0; }
 .news-art { height: 260px; padding: 22px; overflow: hidden; position: relative; display: flex; align-items: flex-end; color: white; isolation: isolate; }
