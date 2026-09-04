@@ -10,9 +10,17 @@ type UserPlaybackChoice = "none" | "play" | "pause";
 
 const HERO_PLAYBACK_RATE = 0.7;
 
+function canAutoPlayHero() {
+  if (typeof window === "undefined" || typeof navigator === "undefined") return false;
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const connection = (navigator as NavigatorWithConnection).connection;
+  return !reducedMotion.matches && connection?.saveData !== true;
+}
+
 export function HeroFilm() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [autoEligible, setAutoEligible] = useState(false);
+  const [autoEligible, setAutoEligible] = useState(canAutoPlayHero);
   const [userChoice, setUserChoice] = useState<UserPlaybackChoice>("none");
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasPresentedFrame, setHasPresentedFrame] = useState(false);
@@ -20,23 +28,20 @@ export function HeroFilm() {
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    const wideScreen = window.matchMedia("(min-width: 769px)");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const connection = (navigator as NavigatorWithConnection).connection;
 
     const updatePlayback = () => {
-      const canAutoPlay = wideScreen.matches && !reducedMotion.matches && connection?.saveData !== true;
+      const canAutoPlay = !reducedMotion.matches && connection?.saveData !== true;
       setAutoEligible(canAutoPlay);
       setAutoPlayBlocked(false);
     };
 
     updatePlayback();
-    wideScreen.addEventListener("change", updatePlayback);
     reducedMotion.addEventListener("change", updatePlayback);
     connection?.addEventListener("change", updatePlayback);
 
     return () => {
-      wideScreen.removeEventListener("change", updatePlayback);
       reducedMotion.removeEventListener("change", updatePlayback);
       connection?.removeEventListener("change", updatePlayback);
     };
@@ -50,6 +55,8 @@ export function HeroFilm() {
 
     video.defaultMuted = true;
     video.muted = true;
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
     video.defaultPlaybackRate = HERO_PLAYBACK_RATE;
     video.playbackRate = HERO_PLAYBACK_RATE;
 
@@ -117,10 +124,11 @@ export function HeroFilm() {
           <video
             ref={videoRef}
             className="hero-film-video"
+            autoPlay={shouldPlay}
             muted
             loop
             playsInline
-            preload={autoEligible || userChoice !== "none" ? "metadata" : "none"}
+            preload={shouldPlay ? "auto" : userChoice !== "none" ? "metadata" : "none"}
             poster={heroPoster}
             tabIndex={-1}
             disablePictureInPicture
