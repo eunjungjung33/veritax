@@ -309,15 +309,7 @@ em { color: var(--gold-bright); }
     inset 0 0 0 1px rgba(255, 255, 255, 0.72);
   opacity: 0;
   transform: translateY(14px);
-  transition: border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
   animation: hero-copy-rise 0.7s var(--metric-delay) cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-.metrics > div:hover {
-  border-color: rgba(199, 162, 85, 0.98);
-  background: #fffdfa;
-  box-shadow:
-    0 22px 52px rgba(7, 20, 38, 0.14),
-    inset 0 0 0 1px rgba(213, 181, 108, 0.16);
 }
 .metrics > div:nth-child(2) { --metric-delay: 0.94s; }
 .metrics > div:nth-child(3) { --metric-delay: 1.06s; }
