@@ -52,7 +52,7 @@ export function Layout() {
       <a className="skip-link" href="#main-content">본문으로 바로가기</a>
       <header className="site-header">
         <Link className="brand" to="/" aria-label={`${brandName} 홈`}>
-          <img className="brand-logo" src="/images/jej-logo-simple.png" alt={brandName} width={1400} height={500} />
+          <img className="brand-logo" src="/images/jej-logo-simple-transparent.png" alt={brandName} width={1400} height={500} />
         </Link>
 
         <nav className="desktop-nav" aria-label="주요 메뉴">
@@ -130,7 +130,7 @@ export function Layout() {
         </div>
         <div className="footer-grid">
           <div>
-            <img className="footer-brand" src="/images/jej-logo-full.png" alt={brandName} width={1800} height={1200} loading="lazy" decoding="async" />
+            <img className="footer-brand" src="/images/jej-logo-full-transparent.png" alt={brandName} width={1800} height={1200} loading="lazy" decoding="async" />
             <p>정은정 세무회계컨설팅<br />JEJ TAX ACCOUNTING ADVISORY</p>
           </div>
           <div>

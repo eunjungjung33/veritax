@@ -53,6 +53,7 @@ p { line-height: 1.75; }
 }
 .brand { display: flex; align-items: center; gap: 13px; flex: 0 0 auto; }
 .brand-logo { width: auto; height: calc(var(--header-height) - 8px); object-fit: contain; }
+.brand-logo, .footer-brand { filter: drop-shadow(.25px 0 0 rgba(239, 244, 250, .6)) drop-shadow(-.25px 0 0 rgba(239, 244, 250, .6)) drop-shadow(0 .25px 0 rgba(239, 244, 250, .6)) drop-shadow(0 -.25px 0 rgba(239, 244, 250, .6)) drop-shadow(0 0 1px rgba(223, 232, 246, .1)); }
 .desktop-nav { margin-left: auto; display: flex; align-items: center; gap: clamp(19px, 2vw, 34px); }
 .desktop-nav > a, .nav-group > a { min-height: var(--header-height); display: flex; align-items: center; position: relative; white-space: nowrap; font-size: 13px; font-weight: 600; }
 .desktop-nav > a::after, .nav-group > a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: 19px; height: 1px; background: var(--gold-bright); transition: right .25s ease; }
