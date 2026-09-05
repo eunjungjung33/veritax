@@ -64,17 +64,6 @@ h1, h2, h3 { word-break: keep-all; line-break: strict; text-wrap: balance; }
 }
 
 .brand { gap: 11px; }
-.brand-mark {
-  width: 38px;
-  height: 38px;
-  color: var(--gold-bright);
-  border-color: rgba(213, 181, 108, 0.7);
-  font-size: 11px;
-  letter-spacing: 0.09em;
-}
-
-.brand-copy strong { font-size: 15px; font-weight: 650; letter-spacing: -0.025em; }
-.brand-copy small { margin-top: 4px; color: #aeb7c3; font-size: 9px; letter-spacing: 0.13em; }
 .desktop-nav { gap: clamp(20px, 1.8vw, 30px); }
 .desktop-nav > a,
 .nav-group > a { font-size: 13px; font-weight: 560; letter-spacing: -0.01em; }
@@ -918,8 +907,6 @@ em { color: var(--gold-bright); }
     padding-left: max(14px, env(safe-area-inset-left));
     padding-right: max(12px, env(safe-area-inset-right));
   }
-  .brand-mark { width: 36px; height: 36px; font-size: 10px; }
-  .brand-copy strong { font-size: 14px; font-weight: 700; }
   .menu-toggle { width: 40px; height: 40px; }
 
   .home-hero { min-height: max(700px, calc(100svh - var(--header-height))); }
@@ -1095,7 +1082,6 @@ em { color: var(--gold-bright); }
 }
 
 @media (max-width: 420px) {
-  .brand-copy strong { font-size: 13px; }
   .hero-copy h1 { font-size: clamp(42px, 13vw, 52px); }
 }
 
