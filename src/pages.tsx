@@ -77,7 +77,7 @@ export function HomePage() {
         <div className="home-about-grid">
           <PrincipalPortrait />
           <div className="home-about-copy">
-            <span className="mini-index">01 — PRINCIPAL CPA</span>
+            <span className="mini-index">01 — CPA / FOUNDER</span>
             <h3>정은정 <small>공인회계사</small></h3>
             <p>한영회계법인·삼정회계법인 택스본부에서의 풍부한 경험을 바탕으로, 개인사업자·법인·고액 자산가를 위한 맞춤형 세무 컨설팅을 제공합니다. SK하이닉스·현대자동차 등 국내 대형 법인의 법인세 신고부터 세무조사 대응까지, 복잡한 세무 문제를 명확하고 신속하게 해결합니다.</p>
             <div className="badge-row"><span>공인회계사 (KICPA)</span><span>창업기업관리사</span></div>
@@ -128,7 +128,7 @@ export function AboutPage() {
       <section className="section profile-section" id="principal">
         <PrincipalPortrait />
         <div className="profile-copy">
-          <span className="eyebrow">PRINCIPAL CPA</span>
+          <span className="eyebrow">CPA / FOUNDER</span>
           <h2>정은정 <small>대표 공인회계사</small></h2>
           <p className="role">공인회계사 (KICPA) <b>|</b> 창업기업관리사</p>
           <div className="profile-intro">
