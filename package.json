@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && tsc -p tsconfig.server.json",
+    "build": "tsc -b && vite build && tsc -p tsconfig.server.json && node dist-server/scripts/prerender-columns.js",
     "start": "node dist-server/server/railway.js",
     "preview": "vite preview",
     "test": "vitest run",

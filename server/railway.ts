@@ -376,13 +376,18 @@ async function staticEndpoint(request: IncomingMessage, response: ServerResponse
     return;
   }
 
-  const exists = await fileExists(requested);
+  let exists = await fileExists(requested);
+  let resolvedPath = requested;
+  if (!exists && !extname(requested)) {
+    const nested = join(requested, "index.html");
+    if (await fileExists(nested)) { exists = true; resolvedPath = nested; }
+  }
   if (!exists && (pathname.startsWith("/assets/") || pathname.startsWith("/images/"))) {
     await sendResponse(response, jsonResponse({ message: "찾을 수 없습니다." }, 404));
     return;
   }
 
-  const target = exists ? requested : join(DIST_ROOT, "index.html");
+  const target = exists ? resolvedPath : join(DIST_ROOT, "index.html");
   const extension = extname(target).toLowerCase();
   const details = await stat(target);
   const rawRange = request.headers.range;

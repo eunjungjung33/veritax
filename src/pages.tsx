@@ -1,5 +1,7 @@
-import { useMemo, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useParams, useSearchParams } from "react-router-dom";
+import { columns, findColumn } from "./columns";
+import { ColumnBody } from "./components/ColumnBody";
 import { ConsultationForm } from "./components/ConsultationForm";
 import { HeroFilm } from "./components/HeroFilm";
 import { ArrowRight, ArrowUpRight, Check, Lock, MapPin, MessageCircle, Phone } from "./components/Icons";
@@ -7,13 +9,14 @@ import { ConsultationBand, PageHero, PortraitPlaceholder, PrincipalPortrait, Sec
 import {
   adviserCareers,
   faqs,
-  insights,
   KAKAO_CHANNEL_URL,
-  NAVER_BLOG_URL,
+  metrics,
   PHONE_HREF,
   PHONE_NUMBER,
   principalCareers,
   principalDuties,
+  principalIntro,
+  principalLectures,
   services,
 } from "./data/content";
 import { consultationServiceFor, estimateFee, feeScales, feeServiceForConsultation, feeServices } from "./data/fees";
@@ -22,9 +25,9 @@ const serviceDescriptionTails: Partial<Record<(typeof services)[number]["number"
   "01": "종합소득세 신고 및 절세 플랜 수립",
   "02": "법인 세무 전반 대행",
   "03": "환급 극대화 전략 수립",
-  "05": "설립 전후 세무·회계 설계",
-  "06": "불복청구 등 전문 세무 용역",
-  "07": "전반적인 기장 서비스",
+  "04": "설립 전후 세무·회계 설계",
+  "05": "불복청구 등 전문 세무 용역",
+  "06": "전반적인 기장 서비스",
 };
 
 function ServiceDescription({ service }: { service: (typeof services)[number] }) {
@@ -48,8 +51,8 @@ export function HomePage() {
         <div className="hero-copy">
           <span className="hero-badge">CERTIFIED PUBLIC ACCOUNTANT · SEOUL GANGDONG</span>
           <h1>
-            <span className="hero-title-line"><span>복잡한 세금,</span></span>
-            <span className="hero-title-line hero-title-accent"><em>명확하게</em></span>
+            <span className="hero-title-line"><span>세금은 복잡해도,</span></span>
+            <span className="hero-title-line hero-title-accent"><span>해답은 <em>명확</em>해야 하니까</span></span>
           </h1>
           <p>
             <strong>Big4 출신 공인회계사가 직접 담당합니다</strong>
@@ -66,10 +69,7 @@ export function HomePage() {
       </section>
 
       <section className="metrics" aria-label="전문 경험">
-        <div><strong>Big4</strong><span>출신 공인회계사</span></div>
-        <div><strong>한영 · 삼정</strong><span>회계법인 경력</span></div>
-        <div><strong>SK · 현대</strong><span>대형 법인 담당</span></div>
-        <div><strong>365</strong><span>연중 상담 가능</span></div>
+        {metrics.map((metric) => <div key={metric.value}><strong>{metric.value}</strong><span>{metric.label}</span></div>)}
       </section>
 
       <section className="section home-about">
@@ -89,9 +89,9 @@ export function HomePage() {
       <section className="section section-cream home-services">
         <SectionHeading eyebrow="WHAT WE DO" title={<>개인부터 기업까지,<br />필요한 세무를 정확히.</>} description="신고부터 전문 세무 컨설팅까지 상황에 맞는 업무를 확인해 보세요." action={{ label: "주요 업무영역 전체", to: "/services" }} />
         <div className="service-preview-grid">
-          {services.slice(0, 6).map((service) => (
+          {services.map((service) => (
             <Link key={service.number} className="service-preview-card" to={`/estimate?service=${encodeURIComponent(service.title)}#consultation`}>
-              <span className="service-preview-number">{service.number}</span>
+              <span className="service-number">{service.number}</span>
               <h3>{service.title}</h3>
               <p className="service-preview-description"><ServiceDescription service={service} /></p>
               <ArrowUpRight />
@@ -103,14 +103,14 @@ export function HomePage() {
       <section className="section home-news">
         <SectionHeading eyebrow="TAX NEWS" title={<>세무 판단에 도움이 되는<br />최신 이야기를 전합니다.</>} action={{ label: "세무 뉴스 전체", to: "/insights" }} />
         <div className="news-grid">
-          {insights.slice(0, 3).map((insight, index) => (
-            <a className="news-card" key={insight.href} href={insight.href} target="_blank" rel="noopener noreferrer">
-              <div className={`news-art news-art-${index + 1}`}><span>{insight.category}</span></div>
-              <small>{insight.date}</small>
-              <h3>{insight.title}</h3>
-              <p>{insight.summary}</p>
-              <span className="news-link">블로그에서 보기 <ArrowUpRight size={15} /></span>
-            </a>
+          {columns.slice(0, 3).map((column, index) => (
+            <Link className="news-card" key={column.slug} to={`/insights/${column.slug}`}>
+              <div className={`news-art news-art-${index + 1}`}><span>{column.category}</span></div>
+              <small>{column.date}</small>
+              <h3>{column.title}</h3>
+              <p>{column.summary}</p>
+              <span className="news-link">칼럼 읽기 <ArrowRight size={15} /></span>
+            </Link>
           ))}
         </div>
       </section>
@@ -131,11 +131,28 @@ export function AboutPage() {
           <span className="eyebrow">PRINCIPAL CPA</span>
           <h2>정은정 <small>대표 공인회계사</small></h2>
           <p className="role">공인회계사 (KICPA) <b>|</b> 창업기업관리사</p>
-          <p className="profile-intro">한영회계법인·삼정회계법인 택스본부에서의 풍부한 경험을 바탕으로, 개인사업자·법인·고액 자산가를 위한 맞춤형 세무 컨설팅을 제공합니다. SK하이닉스·현대자동차 등 국내 대형 법인의 법인세 신고부터 세무조사 대응까지, 복잡한 세무 문제를 명확하고 신속하게 해결합니다.</p>
+          <div className="profile-intro">
+            {principalIntro.map((paragraph) => (
+              <p key={paragraph}>
+                {paragraph.split("\n").map((line, index) => <span key={line}>{index > 0 && <br />}{line}</span>)}
+              </p>
+            ))}
+          </div>
           <div className="badge-row"><span>공인회계사 (KICPA)</span><span>창업기업관리사</span></div>
           <div className="profile-details">
             <div><strong>경력 사항</strong><ul>{principalCareers.map((career) => <li key={career}>{career}</li>)}</ul></div>
             <div><strong>주요 담당 업무</strong><ul>{principalDuties.map((duty) => <li key={duty}>{duty}</li>)}</ul></div>
+            <div className="profile-lectures">
+              <strong>강의 이력 <small>LECTURES &amp; MENTORING</small></strong>
+              <ol>
+                {principalLectures.map((lecture, index) => (
+                  <li key={lecture.title}>
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    <span>{lecture.title}{lecture.host && <em> — {lecture.host}</em>}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
           </div>
         </div>
       </section>
@@ -161,7 +178,7 @@ export function AboutPage() {
 export function ServicesPage() {
   return (
     <>
-      <PageHero eyebrow="PRACTICE AREAS" title={<>주요<br /><em>업무영역.</em></>} description="개인·법인 세무신고부터 세무조사 대응과 창업·가상자산 세무까지 정확한 기준으로 지원합니다." />
+      <PageHero eyebrow="PRACTICE AREAS" title={<>주요<br /><em>업무영역.</em></>} description="개인·법인 세무신고부터 법인 설립, 세무 컨설팅, 기장 대리까지 정확한 기준으로 지원합니다." />
       <section className="section service-detail-section" id="service-list">
         <div className="service-card-grid">
           {services.map((service) => (
@@ -249,23 +266,79 @@ export function EstimatePage() {
 export function InsightsPage() {
   return (
     <>
-      <PageHero eyebrow="TAX NEWS" title={<>알아두면 힘이 되는<br /><em>세무 뉴스.</em></>} description="정은정 공인회계사가 네이버 블로그에 직접 전하는 세무·회계 이야기입니다." />
+      <PageHero eyebrow="TAX NEWS" title={<>알아두면 힘이 되는<br /><em>세무 뉴스.</em></>} description="정은정 공인회계사가 직접 쓰는 세무·회계 칼럼입니다." />
       <section className="section insights-section">
         <div className="blog-heading">
-          <div><span className="eyebrow">NAVER BLOG</span><h2>정은정 회계사의<br />세무·회계 이야기</h2></div>
-          <a className="button button-outline" href={NAVER_BLOG_URL} target="_blank" rel="noopener noreferrer">블로그 바로가기 <ArrowUpRight size={16} /></a>
+          <div><span className="eyebrow">TAX COLUMN</span><h2>정은정 회계사의<br />세무·회계 이야기</h2></div>
         </div>
-        <div className="blog-list">
-          {insights.map((insight, index) => (
-            <a key={insight.href} href={insight.href} target="_blank" rel="noopener noreferrer">
-              <div className={`news-art news-art-${(index % 3) + 1}`}><span>{insight.category}</span></div>
-              <div><small>{insight.date} · {insight.category}</small><h3>{insight.title}</h3><p>{insight.summary}</p></div>
-              <ArrowUpRight />
-            </a>
+        <div className="column-grid">
+          {columns.map((column, index) => (
+            <Link className="column-card" key={column.slug} to={`/insights/${column.slug}`}>
+              <div className={`news-art news-art-${(index % 3) + 1}`}><span>{column.category}</span></div>
+              <small>{column.date} · {column.category}</small>
+              <h3>{column.title}</h3>
+              <p>{column.summary}</p>
+              <span className="news-link">칼럼 읽기 <ArrowRight size={15} /></span>
+            </Link>
           ))}
         </div>
-        <a className="blog-more-link" href={NAVER_BLOG_URL} target="_blank" rel="noopener noreferrer">블로그에서 세무 정보 더 보기 <ArrowRight /></a>
+        {columns.length === 0 && <p className="column-empty">등록된 칼럼이 아직 없습니다.</p>}
       </section>
+      <ConsultationBand />
+    </>
+  );
+}
+
+const DEFAULT_DESCRIPTION = "Big4 출신 정은정 공인회계사가 직접 담당하는 개인·법인 세무신고, 세무조사 대응 및 세무 컨설팅 — 서울 강동구 고덕";
+
+function useDocumentMeta(title: string | undefined, description: string | undefined, path: string) {
+  useEffect(() => {
+    if (!title) return;
+    document.title = title;
+    const meta = document.querySelector('meta[name="description"]');
+    const canonical = document.querySelector('link[rel="canonical"]');
+    meta?.setAttribute("content", description ?? DEFAULT_DESCRIPTION);
+    canonical?.setAttribute("href", `https://veritax.co.kr${path}`);
+    return () => {
+      meta?.setAttribute("content", DEFAULT_DESCRIPTION);
+      canonical?.setAttribute("href", "https://veritax.co.kr/");
+    };
+  }, [title, description, path]);
+}
+
+export function ColumnPage() {
+  const { slug = "" } = useParams();
+  const column = findColumn(slug);
+  useDocumentMeta(column && `${column.title} | 정은정 세무회계컨설팅`, column?.summary, `/insights/${slug}`);
+  if (!column) return <NotFoundPage />;
+
+  const index = columns.findIndex((item) => item.slug === column.slug);
+  const previous = columns[index + 1];
+  const next = columns[index - 1];
+
+  return (
+    <>
+      <article className="column-article">
+        <header className="column-header">
+          <Link className="column-back" to="/insights">← 세무 뉴스 목록</Link>
+          <span className="eyebrow light">{column.category}</span>
+          <h1>{column.title}</h1>
+          <p className="column-meta"><time dateTime={column.date.replaceAll(".", "-")}>{column.date}</time> · 정은정 공인회계사</p>
+        </header>
+        <div className="column-layout">
+          <ColumnBody blocks={column.blocks} />
+          <aside className="column-aside">
+            <strong>세무 상담이 필요하신가요?</strong>
+            <p>칼럼 내용은 일반적인 안내이며, 실제 적용은 사실관계에 따라 달라질 수 있습니다.</p>
+            <a className="button button-gold button-small" href={KAKAO_CHANNEL_URL} target="_blank" rel="noopener noreferrer"><MessageCircle size={16} /> 카카오톡 상담</a>
+            <a className="button button-outline button-small" href={PHONE_HREF}><Phone size={16} /> {PHONE_NUMBER}</a>
+          </aside>
+        </div>
+        <nav className="column-nav" aria-label="이전·다음 칼럼">
+          {previous ? <Link to={`/insights/${previous.slug}`}><small>이전 칼럼</small>{previous.title}</Link> : <span />}
+          {next ? <Link className="is-next" to={`/insights/${next.slug}`}><small>다음 칼럼</small>{next.title}</Link> : <span />}
+        </nav>
+      </article>
       <ConsultationBand />
     </>
   );
@@ -290,7 +363,7 @@ export function LocationPage() {
         <div className="map-embed">
           <iframe
             title="정은정 세무회계컨설팅 위치 지도"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=127.154%2C37.561%2C127.166%2C37.569&layer=mapnik&marker=37.5652057%2C127.1604727"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=127.1575%2C37.5632%2C127.1635%2C37.5672&layer=mapnik&marker=37.5652057%2C127.1604727"
             referrerPolicy="no-referrer"
           />
           <p>지도 데이터 © OpenStreetMap contributors</p>

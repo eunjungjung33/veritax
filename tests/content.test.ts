@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { KAKAO_CHANNEL_URL, navItems, PHONE_HREF, services } from "../src/data/content";
+import { KAKAO_CHANNEL_URL, metrics, navItems, PHONE_HREF, services } from "../src/data/content";
 import { validateConsultation } from "../netlify/functions/_lib/validation";
 
 describe("v2 website brief", () => {
@@ -16,7 +16,7 @@ describe("v2 website brief", () => {
     expect(PHONE_HREF).toBe("tel:0264261654");
   });
 
-  it("publishes only the nine confirmed practice areas", () => {
+  it("publishes the six confirmed practice areas with continuous numbering", () => {
     expect(services.map((service) => service.title)).toEqual([
       "종합소득세 신고",
       "법인세 신고",
@@ -24,11 +24,13 @@ describe("v2 website brief", () => {
       "법인 설립 컨설팅",
       "세무 컨설팅",
       "기장 대리",
-      "비상장주식평가",
-      "창업 세무 컨설팅",
-      "가상자산 세무",
     ]);
-    expect(services.map((service) => service.number)).toEqual(["01", "02", "03", "05", "06", "07", "08", "09", "10"]);
+    expect(services.map((service) => service.number)).toEqual(["01", "02", "03", "04", "05", "06"]);
+    expect(services.find((service) => service.title === "기장 대리")?.description).toBe("월별 장부 작성, 인건비 신고, 4대보험 관리까지 전반적인 기장 서비스");
+  });
+
+  it("keeps the second-brief hero metrics in order", () => {
+    expect(metrics.map((metric) => metric.value)).toEqual(["Big4", "SK · 현대", "99%", "300건"]);
   });
 
   it("accepts every published practice area in the consultation API", () => {

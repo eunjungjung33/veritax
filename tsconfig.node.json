@@ -16,6 +16,8 @@
     "server/**/*.ts",
     "src/data/content.ts",
     "src/data/fees.ts",
+    "src/columns/parse.ts",
+    "scripts/prerender-columns.ts",
     "src/utils/**/*.ts",
     "tests/**/*.ts"
   ]

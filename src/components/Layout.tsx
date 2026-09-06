@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { KAKAO_CHANNEL_URL, navItems, PHONE_HREF, PHONE_NUMBER } from "../data/content";
 import { ArrowUpRight, MessageCircle, Phone } from "./Icons";
@@ -18,12 +18,22 @@ const titles: Record<string, string> = {
 
 export function Layout() {
   const [open, setOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
 
+  const copyPhoneOnDesktop = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches || !navigator.clipboard) return;
+    event.preventDefault();
+    navigator.clipboard.writeText(PHONE_NUMBER).then(() => {
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2200);
+    }).catch(() => {});
+  };
+
   useEffect(() => {
     setOpen(false);
-    document.title = titles[location.pathname] ?? brandName;
+    if (!location.pathname.startsWith("/insights/")) document.title = titles[location.pathname] ?? brandName;
     if (location.hash) {
       requestAnimationFrame(() => document.getElementById(location.hash.slice(1))?.scrollIntoView({ behavior: "auto" }));
     } else {
@@ -52,7 +62,7 @@ export function Layout() {
       <a className="skip-link" href="#main-content">본문으로 바로가기</a>
       <header className="site-header">
         <Link className="brand" to="/" aria-label={`${brandName} 홈`}>
-          <img className="brand-logo" src="/images/jej-logo-white.png" alt={brandName} width={1280} height={209} />
+          <img className="brand-logo" src="/images/jej-logo-white.png" alt={brandName} width={1186} height={248} />
         </Link>
 
         <nav className="desktop-nav" aria-label="주요 메뉴">
@@ -115,9 +125,10 @@ export function Layout() {
         <a className="floating-kakao" href={KAKAO_CHANNEL_URL} target="_blank" rel="noopener noreferrer" aria-label="카카오톡 채널로 상담">
           <MessageCircle /><span>카톡</span>
         </a>
-        <a className="floating-phone" href={PHONE_HREF} aria-label={`${PHONE_NUMBER}로 전화`}>
-          <Phone /><span>전화</span>
+        <a className="floating-phone" href={PHONE_HREF} aria-label={`${PHONE_NUMBER}로 전화`} onClick={copyPhoneOnDesktop}>
+          <Phone /><span className="floating-phone-label">전화</span><span className="floating-phone-number">{PHONE_NUMBER}</span>
         </a>
+        <span className={`floating-toast ${copied ? "is-visible" : ""}`} role="status" aria-live="polite">{copied ? "전화번호가 복사되었습니다" : ""}</span>
       </div>
 
       <footer className="site-footer">
@@ -130,7 +141,7 @@ export function Layout() {
         </div>
         <div className="footer-grid">
           <div>
-            <img className="footer-brand" src="/images/jej-logo-white.png" alt={brandName} width={1280} height={209} loading="lazy" decoding="async" />
+            <img className="footer-brand" src="/images/jej-logo-white.png" alt={brandName} width={1186} height={248} loading="lazy" decoding="async" />
             <p>정은정 세무회계컨설팅<br />JEJ TAX ACCOUNTING ADVISORY</p>
           </div>
           <div>

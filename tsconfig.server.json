@@ -13,5 +13,5 @@
     "declaration": false,
     "noEmit": false
   },
-  "include": ["server/railway.ts"]
+  "include": ["server/railway.ts", "scripts/prerender-columns.ts"]
 }
