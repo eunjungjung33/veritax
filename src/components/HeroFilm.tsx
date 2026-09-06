@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import heroPoster from "../assets/hero-gold-path-poster.jpg";
-import heroVideo from "../assets/hero-one-take.mp4";
+import heroVideo from "../assets/hero-one-take-consultation-preview.mp4";
 import { HERO_BASE_PLAYBACK_RATE, syncHeroPlaybackRate } from "../utils/heroPlayback";
 
 type NavigatorWithConnection = Navigator & {

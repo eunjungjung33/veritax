@@ -14,7 +14,7 @@ describe("hero segmented playback", () => {
   it("keeps the approved playback speed for each scene group", () => {
     expect(HERO_BASE_PLAYBACK_RATE).toBe(0.7);
     expect(HERO_CONSULTATION_PLAYBACK_RATE).toBe(1.2);
-    expect(HERO_CITY_PLAYBACK_RATE).toBe(0.6);
+    expect(HERO_CITY_PLAYBACK_RATE).toBe(0.7);
   });
 
   it.each([
