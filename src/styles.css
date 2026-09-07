@@ -52,7 +52,7 @@ p { line-height: 1.75; }
   backdrop-filter: blur(14px);
 }
 .brand { display: flex; align-items: center; gap: 13px; flex: 0 0 auto; }
-.brand-logo { width: clamp(200px, 20vw, 272px); max-width: calc(100vw - 100px); height: auto; object-fit: contain; }
+.brand-logo { width: clamp(250px, 22vw, 330px); max-width: calc(100vw - 86px); height: auto; object-fit: contain; }
 .desktop-nav { margin-left: auto; display: flex; align-items: center; gap: clamp(19px, 2vw, 34px); }
 .desktop-nav > a, .nav-group > a { min-height: var(--header-height); display: flex; align-items: center; position: relative; white-space: nowrap; font-size: 13px; font-weight: 600; }
 .desktop-nav > a::after, .nav-group > a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: 19px; height: 1px; background: var(--gold-bright); transition: right .25s ease; }
@@ -321,7 +321,7 @@ em { color: var(--gold-bright); font: inherit; font-style: normal; }
 .circle-link { width: clamp(90px, 9vw, 140px); aspect-ratio: 1; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.45); border-radius: 50%; transition: background .2s; }
 .circle-link:hover { background: var(--gold); }
 .footer-grid { padding: 46px 0; display: grid; grid-template-columns: 1.3fr repeat(3, 1fr); gap: 40px; border-top: 1px solid rgba(255,255,255,.2); }
-.footer-brand { width: 250px; max-width: 100%; height: auto; }
+.footer-brand { width: 320px; max-width: 100%; height: auto; }
 .footer-grid strong { color: #9db3ad; font: 700 9px Inter, sans-serif; letter-spacing: .18em; }
 .footer-grid p { margin: 14px 0 0; color: #c8d5d1; font-size: 12px; }
 .footer-bottom { padding-top: 24px; display: flex; justify-content: space-between; gap: 20px; border-top: 1px solid rgba(255,255,255,.14); color: #839993; font-size: 10px; }
@@ -336,6 +336,8 @@ em { color: var(--gold-bright); font: inherit; font-style: normal; }
   .desktop-nav { display: none; }
   .menu-toggle { display: grid; }
   .header-actions { margin-left: auto; gap: 9px; }
+  .brand { flex: 1 1 auto; min-width: 0; margin-right: 9px; }
+  .brand-logo { width: 100%; max-width: 330px; }
   .mobile-menu { display: block; position: fixed; inset: var(--header-height) 0 0; z-index: 90; padding: 30px var(--pad); overflow-y: auto; color: white; background: #171c1a; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: opacity .2s, transform .2s, visibility .2s; }
   .mobile-menu.is-open { opacity: 1; visibility: visible; transform: none; }
   .mobile-menu nav { max-width: 780px; margin: 0 auto; }
