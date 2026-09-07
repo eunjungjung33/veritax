@@ -1002,7 +1002,6 @@ em { color: var(--gold-bright); }
     padding-left: max(14px, env(safe-area-inset-left));
     padding-right: max(12px, env(safe-area-inset-right));
   }
-  .brand-logo { width: clamp(100px, 28vw, 120px); }
   .menu-toggle { width: 40px; height: 40px; }
 
   .home-hero { min-height: max(700px, calc(100svh - var(--header-height))); }
