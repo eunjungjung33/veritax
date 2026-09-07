@@ -337,7 +337,7 @@ em { color: var(--gold-bright); font: inherit; font-style: normal; }
   .menu-toggle { display: grid; }
   .header-actions { margin-left: auto; gap: 9px; }
   .brand { flex: 1 1 auto; min-width: 0; margin-right: 9px; }
-  .brand-logo { width: 100%; max-width: 330px; }
+  .brand-logo { width: 100%; max-width: 238px; }
   .mobile-menu { display: block; position: fixed; inset: var(--header-height) 0 0; z-index: 90; padding: 30px var(--pad); overflow-y: auto; color: white; background: #171c1a; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: opacity .2s, transform .2s, visibility .2s; }
   .mobile-menu.is-open { opacity: 1; visibility: visible; transform: none; }
   .mobile-menu nav { max-width: 780px; margin: 0 auto; }
