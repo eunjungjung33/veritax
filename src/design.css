@@ -1135,6 +1135,7 @@ em { color: var(--gold-bright); }
     left: max(12px, env(safe-area-inset-left));
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-items: stretch;
     gap: 8px;
   }
   .floating-actions a {
@@ -1160,6 +1161,8 @@ em { color: var(--gold-bright); }
     border-color: rgba(229, 201, 135, 0.88);
     background: #102a46;
   }
+  .floating-phone-label { display: block; }
+  .floating-phone-number { display: none; }
   .floating-toast { display: none; }
   .floating-phone span {
     position: static;
