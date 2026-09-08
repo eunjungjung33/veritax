@@ -1,6 +1,6 @@
 # 정은정 세무회계컨설팅
 
-정은정 세무회계컨설팅(영문 표기: JEJ TAX ACCOUNTING ADVISORY)의 React + Railway/Netlify 홈페이지입니다.
+정은정 세무회계컨설팅(영문 표기: JEJ TAX ACCOUNTING ADVISORY)의 React + Netlify 홈페이지입니다. (운영 사이트: Netlify `capable-begonia-05d189`, 도메인 veritax.co.kr)
 
 ## 제공 기능
 
@@ -50,7 +50,7 @@ npm run dev
 **굵게** 표시할 수 있습니다.
 ```
 
-3. GitHub `main` 브랜치에 커밋·푸시하면 빌드 과정에서 자동으로 반영됩니다. 파일을 직접 다루기 어려우면 원고 파일을 제작 업체에 전달해 등록을 요청하세요.
+3. 저장소에 커밋한 뒤 Netlify 배포(`npx netlify-cli deploy --prod --build --site 0aa6be1f-9eeb-430c-a4e4-205cb7728da5`, 토큰은 `NETLIFY_AUTH_TOKEN`)를 실행하면 반영됩니다. Netlify 콘솔에서 GitHub 저장소를 연결해 두면 이후에는 push만으로 자동 배포됩니다. 파일을 직접 다루기 어려우면 원고 파일을 제작 업체에 전달해 등록을 요청하세요.
 
 빌드 시 `scripts/prerender-columns.ts`가 칼럼마다 `/insights/<파일명>` 정적 페이지(제목 태그·메타 디스크립션·본문 포함)와 `sitemap.xml` 항목을 생성하므로 검색엔진이 각 칼럼을 개별 페이지로 수집합니다.
 
@@ -67,7 +67,7 @@ npm run dev
 ## 배포 전 필수 설정
 
 1. 비밀 환경변수에 `CONSULTATION_ENCRYPTION_KEY`, `CSRF_SECRET`, `CONSULTATION_KEY_VERSION`을 설정합니다.
-2. Railway에서는 `consultation-data` 볼륨을 `/data`에 마운트하고 `CONSULTATION_STORAGE_DIR=/data/consultations`로 설정합니다.
+2. Netlify에서는 상담 원문이 Netlify Blobs에 암호화 저장되므로 별도 볼륨 설정이 없습니다. (Railway 배포는 2026-09-09에 종료했습니다.)
 3. 개인정보 처리방침의 저장 지역·국외 이전 문구를 실제 운영 계약에 맞춰 최종 검토합니다.
 4. 실제 사무실 사진과 대표·고문 프로필 사진을 최종 제공본으로 교체합니다.
 

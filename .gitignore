@@ -20,3 +20,5 @@ artifacts/qa/*
 !artifacts/qa/home-mobile-final.png
 !artifacts/qa/estimate-final.png
 !artifacts/qa/services-final.png
+*.env
+!.env.example

@@ -38,7 +38,7 @@ function renderBlock(block: ColumnBlock) {
 
 function renderPage(template: string, column: Column) {
   const title = `${column.title} | 정은정 세무회계컨설팅`;
-  const url = `${SITE}/insights/${encodeURI(column.slug)}`;
+  const url = `${SITE}/insights/${encodeURI(column.slug)}/`;
   const article = `<article><h1>${escapeHtml(column.title)}</h1><p>${escapeHtml(column.date)} · ${escapeHtml(column.category)}</p>${column.blocks.map(renderBlock).join("")}</article>`;
   return template
     .replace(/<title>[^<]*<\/title>/u, `<title>${escapeHtml(title)}</title>`)
@@ -70,7 +70,7 @@ async function main() {
   const sitemap = await readFile(sitemapPath, "utf8");
   const urls = columns.map((column) => {
     const lastmod = column.date ? `<lastmod>${column.date.replaceAll(".", "-")}</lastmod>` : "";
-    return `  <url><loc>${SITE}/insights/${encodeURI(column.slug)}</loc>${lastmod}<priority>0.7</priority></url>`;
+    return `  <url><loc>${SITE}/insights/${encodeURI(column.slug)}/</loc>${lastmod}<priority>0.7</priority></url>`;
   }).join("\n");
   await writeFile(sitemapPath, sitemap.replace("</urlset>", `${urls}\n</urlset>`), "utf8");
   console.log(`prerendered ${columns.length} column page(s)`);

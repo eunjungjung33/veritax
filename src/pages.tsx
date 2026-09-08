@@ -309,7 +309,7 @@ function useDocumentMeta(title: string | undefined, description: string | undefi
 export function ColumnPage() {
   const { slug = "" } = useParams();
   const column = findColumn(slug);
-  useDocumentMeta(column && `${column.title} | 정은정 세무회계컨설팅`, column?.summary, `/insights/${slug}`);
+  useDocumentMeta(column && `${column.title} | 정은정 세무회계컨설팅`, column?.summary, `/insights/${slug}/`);
   if (!column) return <NotFoundPage />;
 
   const index = columns.findIndex((item) => item.slug === column.slug);
