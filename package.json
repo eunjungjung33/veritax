@@ -20,7 +20,7 @@
     "tls:check": "node scripts/check-tls.mjs"
   },
   "dependencies": {
-    "@netlify/blobs": "11.0.2",
+    "@netlify/blobs": "11.0.3",
     "@netlify/functions": "6.0.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
